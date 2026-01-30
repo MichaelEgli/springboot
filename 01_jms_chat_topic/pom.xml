@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ch.bfh.eglim8.spring.jms</groupId>
-	<artifactId>jms</artifactId>
+	<artifactId>01_jms_chat_topic</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>01_jms_chat_topic</name>
 	<description>Demo project for Spring Boot</description>
@@ -37,6 +37,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-json</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-activemq-test</artifactId>
+            <scope>test</scope>
         </dependency>
 	</dependencies>
 

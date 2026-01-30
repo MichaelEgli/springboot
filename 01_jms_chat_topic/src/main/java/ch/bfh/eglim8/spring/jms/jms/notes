@@ -1,5 +1,5 @@
 
-Windows User Browser: Admin/admin
+Windows User Browser: Admin/admin (oder admin/admin)
 http://localhost:8161/admin/index.jsp
 
 Run the ActiveMQ Classic message broker:

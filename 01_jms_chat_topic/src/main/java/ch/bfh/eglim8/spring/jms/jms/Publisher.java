@@ -31,8 +31,9 @@ public class Publisher implements CommandLineRunner {
         while (true) {
             String text = scanner.nextLine();
             if (text.isEmpty()) break;
-            ChatMessage message = new ChatMessage(user, text);
-            jmsTemplate.convertAndSend(topic, message);
+            // ChatMessage message = new ChatMessage(user, text);
+            // jmsTemplate.convertAndSend(topic, message);
+            jmsTemplate.convertAndSend(topic, text);
  /*           jmsTemplate.send(topic, session -> {
                 Message message = session.createTextMessage(text);
                 message.setStringProperty("user", user);

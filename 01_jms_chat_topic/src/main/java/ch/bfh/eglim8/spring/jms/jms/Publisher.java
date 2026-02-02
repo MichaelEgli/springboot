@@ -1,8 +1,5 @@
 package ch.bfh.eglim8.spring.jms.jms;
 
-import jakarta.annotation.Resource;
-import jakarta.jms.Message;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.jms.core.JmsTemplate;
@@ -31,9 +28,15 @@ public class Publisher implements CommandLineRunner {
         while (true) {
             String text = scanner.nextLine();
             if (text.isEmpty()) break;
-            // ChatMessage message = new ChatMessage(user, text);
-            // jmsTemplate.convertAndSend(topic, message);
-            jmsTemplate.convertAndSend(topic, text);
+
+            // Variante 1: TextMessage senden (Topic als Property)
+            // jmsTemplate.convertAndSend(topic, text);
+
+            // Variante 2: Message ist typisiert mit ChatMessage (Topic & User als Property)
+            ChatMessage message = new ChatMessage(user, text);
+            jmsTemplate.convertAndSend(topic, message);
+
+
  /*           jmsTemplate.send(topic, session -> {
                 Message message = session.createTextMessage(text);
                 message.setStringProperty("user", user);

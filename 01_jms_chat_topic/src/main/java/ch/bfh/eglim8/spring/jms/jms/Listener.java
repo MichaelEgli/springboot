@@ -8,8 +8,8 @@ public class Listener {
 
     // Beispiel mit Selector:
     // @JmsListener(destination = "ChatTopic", selector = "user <> '${chat.user}'")
-    @JmsListener(destination = "ChatTopic")
-    public void receiveMessage(String message) {
+    @JmsListener(destination = "${chat.topic}")
+    public void receiveMessage(ChatMessage message) {
         System.out.println("Received Message: " + message);
     }
 }

@@ -13,7 +13,6 @@ Implement a publisher and a listener component that allow a user to send text me
 Add a property user to the messages that identifies the sender of the message and display it.
 Define a message selector such that the sender's own messages are not received.
 
-
 ---
 
 Define a ChatMessage class with a user and a text property.

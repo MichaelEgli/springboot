@@ -17,11 +17,24 @@ Define a message selector such that the sender's own messages are not received.
 
 Define a ChatMessage class with a user and a text property.
 // optional: Implement a message converter that automatically converts chat messages from and to CSV.
-Configure the JacksonJsonMessageConverter with the typeId property set to chat such that chat messages are converted from and to JSON.ure the MappingJackson2MessageConverter such that the chat messages are converted from and to JSON.
+Configure the JacksonJsonMessageConverter with the typeId property set to chat such that chat messages are converted from and to JSON.
+
+Wird das Bean jacksonJsonMessageConverter auskommentiert, können nur Strings gesendet/empfangen werden.
+Dadurch kann über ActivMQ UI über "SendTo Topic" auch eine Nachricht gesendet werden.
+
+Das manuelle Verschicken von Nachrichten über die ActiveMQ UI funktioniert nur, wenn der Message Converter deaktiviert ist (auskommentiert).
+Ist der MessageConverter aktiv, erwartet der Listener eine JSON Nachricht, welche über die UI nicht gesendet werden kann.
+Ursache ist, dass das ActiveMQ 6.2.0 nicht erlaubt, Custom Properties (wie typeId) zu setzen.
+Der Wert von typeId müsste = "chat" sein.
+Logisch wäre dann, dass der Body wiefolgt aussehen müsste:
+{
+  "user": "eglim8",
+  "text": "Hello from ActiveMQ UI"
+}
 
 
-My Notes
-========
+Weitere Notes
+=======
 Topic:
 - Eine Message an mehrere Consumer
 - Behälter auf die Subsriptions erfolgen, anhand dieser die Consumer die Notifications erhalten (Publisher senden die Message an Topics)

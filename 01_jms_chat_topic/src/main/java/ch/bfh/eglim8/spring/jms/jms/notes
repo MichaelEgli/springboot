@@ -18,3 +18,15 @@ Define a message selector such that the sender's own messages are not received.
 Define a ChatMessage class with a user and a text property.
 // optional: Implement a message converter that automatically converts chat messages from and to CSV.
 Configure the JacksonJsonMessageConverter with the typeId property set to chat such that chat messages are converted from and to JSON.ure the MappingJackson2MessageConverter such that the chat messages are converted from and to JSON.
+
+
+My Notes
+=======
+Topic:
+- Eine Message an mehrere Consumer
+- Behälter auf die Subsriptions erfolgen, anhand dieser die Consumer die Notifications erhalten (Publisher senden die Message an Topics)
+- pushed-based (normalerweise), sobald in den Topics was ist, wird dies an die Subscriber gesendet
+- pulled-based, Subscriber fragen (periodisch) nach neuen Messages
+Queue:
+- Pro Consumer eine Message (point to point domain), keine Verteilung an mehrere Consumer
+- Ein Consumer kann aber mehrere Producer/Sender haben (es können mehrere Sender Nachrichten in die gleiche Queue schreiben)

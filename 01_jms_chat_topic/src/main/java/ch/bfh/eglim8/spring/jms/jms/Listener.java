@@ -10,6 +10,6 @@ public class Listener {
     // @JmsListener(destination = "ChatTopic", selector = "user <> '${chat.user}'")
     @JmsListener(destination = "${chat.topic}")
     public void receiveMessage(ChatMessage message) {
-        System.out.println("Received Message: " + message);
+        System.out.println("Received Message Listener1: " + message);
     }
 }

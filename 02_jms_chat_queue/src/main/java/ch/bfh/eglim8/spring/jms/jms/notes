@@ -1,0 +1,54 @@
+
+Windows User Browser: Admin/admin (oder admin/admin)
+http://localhost:8161/admin/index.jsp
+
+Run the ActiveMQ Classic message broker:
+docker run --name activemq -p 8161:8161 -p 61616:61616 -d apache/activemq-classic
+
+Create a Spring application with the starters spring-boot-starter-activemq and spring-boot-starter-json as dependencies.
+Define application properties that provide the URL of the ActiveMQ Classic message broker and enable the publish-subscribe domain:
+spring.activemq.broker-url=tcp://localhost:61616
+spring.jms.pub-sub-domain=true
+Implement a publisher and a listener component that allow a user to send text messages to and receive text messages from the topic ChatTopic.
+Add a property user to the messages that identifies the sender of the message and display it.
+Define a message selector such that the sender's own messages are not received.
+
+---
+
+Define a ChatMessage class with a user and a text property.
+// optional: Implement a message converter that automatically converts chat messages from and to CSV.
+Configure the JacksonJsonMessageConverter with the typeId property set to chat such that chat messages are converted from and to JSON.
+
+Wird das Bean jacksonJsonMessageConverter auskommentiert, können nur Strings gesendet/empfangen werden.
+Dadurch kann über ActivMQ UI über "SendTo Topic" auch eine Nachricht gesendet werden.
+
+Das manuelle Verschicken von Nachrichten über die ActiveMQ UI funktioniert nur, wenn der Message Converter deaktiviert ist (auskommentiert).
+Ist der MessageConverter aktiv, erwartet der Listener eine JSON Nachricht, welche über die UI nicht gesendet werden kann.
+Ursache ist, dass das ActiveMQ 6.2.0 nicht erlaubt, Custom Properties (wie typeId) zu setzen.
+Der Wert von typeId müsste = "chat" sein.
+Logisch wäre dann, dass der Body wiefolgt aussehen müsste:
+{
+  "user": "eglim8",
+  "text": "Hello from ActiveMQ UI"
+}
+
+
+Weitere Notes
+=======
+Topic:
+- Eine Message an mehrere Consumer
+- Behälter auf die Subsriptions erfolgen, anhand dieser die Consumer die Notifications erhalten (Publisher senden die Message an Topics)
+- pushed-based (normalerweise), sobald in den Topics was ist, wird dies an die Subscriber gesendet
+- pulled-based, Subscriber fragen (periodisch) nach neuen Messages
+Queue:
+- Pro Consumer eine Message (point to point domain), keine Verteilung an mehrere Consumer
+- Ein Consumer kann aber mehrere Producer/Sender haben (es können mehrere Sender Nachrichten in die gleiche Queue schreiben)
+
+Allgemeine Eigenschaften des Messaging Systems:
+- Asynchronität: Sender und Empfänger müssen nicht gleichzeitig aktiv sein
+- Entkopplung: Sender und Empfänger kennen sich nicht
+- Zuverlässigkeit: Nachrichten werden garantiert zugestellt (je nach Konfiguration)
+- Skalierbarkeit: Mehrere Sender und Empfänger können gleichzeitig arbeiten
+- Eigene DB für Messages (Message Store), Einträge werden nach erfolgreicher Zustellung gelöscht
+- Transaktionen: Nachrichten können in Transaktionen verarbeitet werden (garantierte Zustellung bis zum Commit oder Rollback)
+- Retry-Mechanismen: Bei Fehlern können Nachrichten erneut zugestellt werden (bis nach max. Anzahl Versuche oder Zeitlimit die Messsage in die Dead Letter Queue verschoben wird)

@@ -32,7 +32,6 @@ Logisch wäre dann, dass der Body wiefolgt aussehen müsste:
   "text": "Hello from ActiveMQ UI"
 }
 
-
 Weitere Notes
 =======
 Topic:

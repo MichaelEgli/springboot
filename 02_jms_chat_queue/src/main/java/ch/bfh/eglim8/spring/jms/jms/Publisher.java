@@ -10,8 +10,8 @@ import java.util.Scanner;
 @Component
 public class Publisher implements CommandLineRunner {
 
-    @Value("${chat.topic}")
-    private String topic;
+    @Value("${chat.queue}")
+    private String queue;
     @Value("${chat.user}")
     private String user;
 
@@ -29,15 +29,15 @@ public class Publisher implements CommandLineRunner {
             String text = scanner.nextLine();
             if (text.isEmpty()) break;
 
-            // Variante 1: TextMessage senden (Topic als Property)
-            // jmsTemplate.convertAndSend(topic, text);
+            // Variante 1: TextMessage senden (Queue als Property)
+            // jmsTemplate.convertAndSend(queue, text);
 
-            // Variante 2: Message ist typisiert mit ChatMessage (Topic & User als Property)
+            // Variante 2: Message ist typisiert mit ChatMessage (Queue & User als Property)
             ChatMessage message = new ChatMessage(user, text);
-            jmsTemplate.convertAndSend(topic, message);
+            jmsTemplate.convertAndSend(queue, message);
 
 
- /*           jmsTemplate.send(topic, session -> {
+ /*           jmsTemplate.send(queue, session -> {
                 Message message = session.createTextMessage(text);
                 message.setStringProperty("user", user);
                 return message;

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 public class Listener {
 
     // Beispiel mit Selector:
-    // @JmsListener(destination = "ChatTopic", selector = "user <> '${chat.user}'")
-    @JmsListener(destination = "${chat.topic}")
+    // @JmsListener(destination = "ChatQueue", selector = "user <> '${chat.user}'")
+    @JmsListener(destination = "${chat.queue}")
     public void receiveMessage(ChatMessage message) {
         System.out.println("Received Message Listener1: " + message);
     }

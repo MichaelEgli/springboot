@@ -1,0 +1,12 @@
+Schritt 1:
+Erstelle eine SpringBoot Applikation mit Repos extends JpaRepository gemäss beiliegendem Entity Model (ohne Beziehungen)
+
+Schritt 2:
+Erstelle einen @DataJpaTest für EmployeeRepo, welcher einen Employee speichert und wieder entfernt
+Gibt es eine andere Variante von Unit-Test (ohne @DataJpaTest)
+
+Schritt 3:
+Erzeuge die Relationen und schreibe dazu Tests
+
+Schritt 4:
+Erzeuge Abfragen/Queries

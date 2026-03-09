@@ -1,12 +1,29 @@
 Schritt 1:
 Erstelle eine SpringBoot Applikation mit Repos extends JpaRepository gemäss beiliegendem Entity Model (ohne Beziehungen)
 
+- Dependencies: JPA, Testcontainer, Postgres, Flyway
+
+Docker Client starten nicht vergessen, sonst kommt dataSource Fehler
+
 Schritt 2:
-Erstelle einen @DataJpaTest für EmployeeRepo, welcher einen Employee speichert und wieder entfernt
-Gibt es eine andere Variante von Unit-Test (ohne @DataJpaTest)
+Erstelle einen @SpringBootTest für EmployeeRepo, welcher einen Employee speichert und wieder entfernt (ohne @DataJpaTest)
 
 Schritt 3:
-Erzeuge die Relationen und schreibe dazu Tests
+Mache den gleichen Test mit @JPA.
+
+Mache zusätzlich eine Criteria-Test Klasse mit beiliegendem Flyway Script, welches die Tabelle mit Daten füllt. Teste, ob die Daten auch wirklich in der DB sind.
+
+Ex1	Find all employees who live in the canton of Zurich
+Ex2	Calculate the average salary of employees per department
+Ex3	Find the employee with the lowest salary
+Ex4 Create a query that returns the employee name and the complete address, ordered by the employee’s name
+Ex5 Find employees who are not assigned to a project
+Ex6 Find all business phone numbers ordered by number
+Ex7 Find employees who do not have a business phone number yet
+ggf. weitere Tests aus QueryTest Lösung Lehrer
 
 Schritt 4:
+Erzeuge die Relationen und schreibe dazu Tests
+
+Schritt 5:
 Erzeuge Abfragen/Queries

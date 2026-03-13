@@ -3,7 +3,7 @@ Erstelle eine SpringBoot Applikation mit Repos extends JpaRepository gemäss bei
 
 - Dependencies: JPA, Testcontainer, Postgres, Flyway
 
-Docker Client starten nicht vergessen, sonst kommt dataSource Fehler
+Docker Client starten nicht vergessen, sonst kommt dataSource Fehler (oder spring.flyway.enabled=false in application.properties setzen)
 
 Schritt 2:
 Erstelle einen @SpringBootTest für EmployeeRepo, welcher einen Employee speichert und wieder entfernt (ohne @DataJpaTest)

@@ -11,6 +11,8 @@ Erstelle einen @SpringBootTest für EmployeeRepo, welcher einen Employee speiche
 Schritt 3:
 Mache den gleichen Test mit @JPA.
 
+Schritt 4:
+
 Mache zusätzlich eine Criteria-Test Klasse mit beiliegendem Flyway Script, welches die Tabelle mit Daten füllt. Teste, ob die Daten auch wirklich in der DB sind.
 
 Ex1	Find all employees who live in the canton of Zurich
@@ -22,8 +24,8 @@ Ex6 Find all business phone numbers ordered by number
 Ex7 Find employees who do not have a business phone number yet
 ggf. weitere Tests aus QueryTest Lösung Lehrer
 
-Schritt 4:
+Schritt 5:
 Erzeuge die Relationen und schreibe dazu Tests
 
-Schritt 5:
+Schritt 6:
 Erzeuge Abfragen/Queries

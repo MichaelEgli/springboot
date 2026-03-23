@@ -25,7 +25,10 @@ Ex7 Find employees who do not have a business phone number yet
 ggf. weitere Tests aus QueryTest Lösung Lehrer
 
 Schritt 5:
-Erzeuge die Relationen und schreibe dazu Tests
+Mache die gleichen Tests als Query-Tests
 
 Schritt 6:
+Erzeuge die Relationen und schreibe dazu Tests
+
+Schritt 7:
 Erzeuge Abfragen/Queries

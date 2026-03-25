@@ -7,6 +7,10 @@ Docker Client starten nicht vergessen, sonst kommt dataSource Fehler (oder sprin
 
 Schritt 2:
 Erstelle einen @SpringBootTest für EmployeeRepo, welcher einen Employee speichert und wieder entfernt (ohne @DataJpaTest)
+Falls Du manuell auf die DB zugreifen möchtest, kannst Du die Testklasse auch mit @DataJpaTest annotieren, damit wird die DB automatisch hochgefahren und nach dem Test wieder gelöscht. Ansonsten musst Du Dich selbst um die DB kümmern (z.B. mit Testcontainers oder manuell).
+Auf meinem privaten Laptop mit Intellij 2025.2.4 habe ich es hingekriegt. Auf dem PF Laptop mit 2025.3.3 nicht (vermutlich jdbc:tc blockiert).
+
+Die Properties in application.properties werden angesprochen, wenn die Applikation gestartet wird. Beim Spring
 
 Schritt 3:
 Mache den gleichen Test mit @JPA.

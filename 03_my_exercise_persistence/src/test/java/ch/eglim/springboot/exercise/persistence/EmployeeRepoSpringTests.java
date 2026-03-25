@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Import;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Import(TestcontainersConfiguration.class)
-@SpringBootTest(properties = {"spring.flyway.enabled=false", "spring.jpa.hibernate.ddl-auto=create"})
+@SpringBootTest(properties = {"spring.flyway.enabled=false"})
 class EmployeeRepoSpringTests {
 
     @Autowired

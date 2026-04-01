@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class CriteriaTest {
      * Ex1	Find all employees who live in the canton of Zurich
      */
     @Test
+    @Sql("/db/migration/afterMigrate.sql")
     void findAllZuercher() {
         var criteriaBuilder = em.getCriteriaBuilder();
         var criteriaQuery = criteriaBuilder.createQuery(Employee.class);

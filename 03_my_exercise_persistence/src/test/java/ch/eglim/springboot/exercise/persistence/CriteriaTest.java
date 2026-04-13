@@ -26,7 +26,6 @@ public class CriteriaTest {
      * Ex1	Find all employees who live in the canton of Zurich
      */
 
-
     /** because we have @DataJpaTest which by default rolls back transactions after each test method, so the data inserted in one test method is not visible in another test method. To fix this, we can use @Sql annotation to run a SQL script that inserts the necessary data before the test method runs. This way, we can ensure that the employee table is populated with the required data for our test. */
     @Test
     @Sql("/db/migration/afterMigrate.sql")

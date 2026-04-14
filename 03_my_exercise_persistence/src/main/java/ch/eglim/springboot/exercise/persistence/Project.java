@@ -1,13 +1,15 @@
 package ch.eglim.springboot.exercise.persistence;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
-public class Project {
+@Inheritance
+public class Project extends BaseEntity {
 
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "project_seq")
+    @SequenceGenerator(name = "project_seq", sequenceName = "project_seq")
+    private Integer id;
     private String name;
 
     public int getId() {

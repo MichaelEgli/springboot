@@ -1,6 +1,7 @@
 package ch.eglim.springboot.exercise.persistence;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.Join;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
@@ -30,12 +31,11 @@ public class CriteriaTest {
     @Test
     @Sql("/db/migration/afterMigrate.sql")
     void findAllZuercher() {
-        var criteriaBuilder = em.getCriteriaBuilder();
-        var criteriaQuery = criteriaBuilder.createQuery(Employee.class);
-        var root = criteriaQuery.from(Employee.class);
-        criteriaQuery.select(root).where(criteriaBuilder.like(root.get("address").get("state"), "ZH"));
-        var result = em.createQuery(criteriaQuery).getResultList();
-        assertEquals(3, result.size());
+        List<Employee> zuercher = employeeRepository.findAll((employee, cq, cb) -> {
+            Join<Employee, Address> address = employee.join(Employee_.address);
+            return cb.equal(address.get(Address_.state), "ZH");
+        });
 
+        assertEquals(3, zuercher.size());
     }
 }

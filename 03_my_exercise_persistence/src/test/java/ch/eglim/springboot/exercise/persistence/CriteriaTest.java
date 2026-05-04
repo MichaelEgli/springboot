@@ -52,16 +52,16 @@ public class CriteriaTest {
         var department = employee.join(Employee_.department);
         cq.multiselect(department.get(Department_.name), cb.avg(employee.get(Employee_.salary)))
                 .groupBy(department.get(Department_.name));
-        List<Object[]> result = em.createQuery(cq).getResultList();
-
-        assertArrayEquals(new Object[]{"IT", 97200.0}, result.get(0));
-        assertArrayEquals(new Object[]{"HR", 95000.0}, result.get(1));
+        List<Object[]> criteriaResult = em.createQuery(cq).getResultList();
 
         // Mit JPQL
-        List<Object[]> jpqlResult = em.createQuery("SELECT d.name, AVG(e.salary) FROM Employee e JOIN e.department d GROUP BY d.name", Object[].class).getResultList();
-        assertArrayEquals(new Object[]{"IT", 97200.0}, jpqlResult.get(0));
-        assertArrayEquals(new Object[]{"HR", 95000.0}, jpqlResult.get(1));
-        }
+        List<Object[]> jpqlResult = em.createQuery(
+                "SELECT d.name, AVG(e.salary) FROM Employee e JOIN e.department d GROUP BY d.name", Object[].class
+        ).getResultList();
+
+        // Hilfsmethode zum Vergleichen der Ergebnisse, unabhängig von der Reihenfolge
+        assertDepartmentAverages(criteriaResult);
+        assertDepartmentAverages(jpqlResult);        }
 
     /*
     Criteria API
@@ -86,4 +86,18 @@ public class CriteriaTest {
             - Für dynamische Abfragen ungeeignet
  */
 
+    private void assertDepartmentAverages(List<Object[]> result) {
+        assertEquals(2, result.size());
+        boolean itFound = false, hrFound = false;
+        for (Object[] row : result) {
+            if ("IT".equals(row[0])) {
+                assertEquals(97200.0, (Double) row[1]);
+                itFound = true;
+            } else if ("HR".equals(row[0])) {
+                assertEquals(95000.0, (Double) row[1]);
+                hrFound = true;
+            }
+        }
+        assertTrue(itFound && hrFound);
+    }
 }

@@ -30,7 +30,7 @@ public class CriteriaTest {
     @Test
     @Sql("/db/migration/afterMigrate.sql")
     void findAllZuercher() {
-        List<Employee> zuercher = employeeRepository.findAll((employee, cq, cb) -> {
+        List<Employee> zuercher = employeeRepository.findAll((employee, cb) -> {
             Join<Employee, Address> address = employee.join(Employee_.address);
             return cb.equal(address.get(Address_.state), "ZH");
         });

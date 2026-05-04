@@ -1,6 +1,8 @@
 package ch.eglim.springboot.exercise.persistence;
 
+import ch.eglim.springboot.exercise.persistence.dto.DepartmentSalaryStatistics;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.Join;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,21 +49,21 @@ public class CriteriaTest {
     void calculateAverageSalaryPerDepartment() {
         // Mit Criteria API
         var cb = em.getCriteriaBuilder();
-        var cq = cb.createQuery(Object[].class);
+        var cq = cb.createQuery(DepartmentSalaryStatistics.class);
         var employee = cq.from(Employee.class);
         var department = employee.join(Employee_.department);
         cq.multiselect(department.get(Department_.name), cb.avg(employee.get(Employee_.salary)))
                 .groupBy(department.get(Department_.name));
-        List<Object[]> criteriaResult = em.createQuery(cq).getResultList();
+        TypedQuery<DepartmentSalaryStatistics> criteriaResult = em.createQuery(cq);
 
         // Mit JPQL
-        List<Object[]> jpqlResult = em.createQuery(
-                "SELECT d.name, AVG(e.salary) FROM Employee e JOIN e.department d GROUP BY d.name", Object[].class
-        ).getResultList();
+        TypedQuery<DepartmentSalaryStatistics> jpqlResult = em.createQuery(
+                "SELECT d.name, AVG(e.salary) FROM Employee e JOIN e.department d GROUP BY d.name", DepartmentSalaryStatistics.class
+        );
 
         // Hilfsmethode zum Vergleichen der Ergebnisse, unabhängig von der Reihenfolge
-        assertDepartmentAverages(criteriaResult);
-        assertDepartmentAverages(jpqlResult);        }
+        assertDepartmentAverages(criteriaResult.getResultList());
+        assertDepartmentAverages(jpqlResult.getResultList());        }
 
     /*
     Criteria API
@@ -86,15 +88,15 @@ public class CriteriaTest {
             - Für dynamische Abfragen ungeeignet
  */
 
-    private void assertDepartmentAverages(List<Object[]> result) {
+    private void assertDepartmentAverages(List<DepartmentSalaryStatistics> result) {
         assertEquals(2, result.size());
         boolean itFound = false, hrFound = false;
-        for (Object[] row : result) {
-            if ("IT".equals(row[0])) {
-                assertEquals(97200.0, (Double) row[1]);
+        for (DepartmentSalaryStatistics row : result) {
+            if ("IT".equals(row.departmentName())) {
+                assertEquals(97200.0, (Double) row.averageSalary());
                 itFound = true;
-            } else if ("HR".equals(row[0])) {
-                assertEquals(95000.0, (Double) row[1]);
+            } else if ("HR".equals(row.departmentName())) {
+                assertEquals(95000.0, (Double) row.averageSalary());
                 hrFound = true;
             }
         }

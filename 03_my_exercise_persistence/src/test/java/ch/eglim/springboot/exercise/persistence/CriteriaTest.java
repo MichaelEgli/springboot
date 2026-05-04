@@ -11,7 +11,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Import(TestcontainersConfiguration.class)
 @DataJpaTest()
@@ -42,5 +42,48 @@ public class CriteriaTest {
     /**
      * Ex2: Calculate the average salary of employees per department
      */
+    @Test
+    @Sql("/db/migration/afterMigrate.sql")
+    void calculateAverageSalaryPerDepartment() {
+        // Mit Criteria API
+        var cb = em.getCriteriaBuilder();
+        var cq = cb.createQuery(Object[].class);
+        var employee = cq.from(Employee.class);
+        var department = employee.join(Employee_.department);
+        cq.multiselect(department.get(Department_.name), cb.avg(employee.get(Employee_.salary)))
+                .groupBy(department.get(Department_.name));
+        List<Object[]> result = em.createQuery(cq).getResultList();
+
+        assertArrayEquals(new Object[]{"IT", 97200.0}, result.get(0));
+        assertArrayEquals(new Object[]{"HR", 95000.0}, result.get(1));
+
+        // Mit JPQL
+        List<Object[]> jpqlResult = em.createQuery("SELECT d.name, AVG(e.salary) FROM Employee e JOIN e.department d GROUP BY d.name", Object[].class).getResultList();
+        assertArrayEquals(new Object[]{"IT", 97200.0}, jpqlResult.get(0));
+        assertArrayEquals(new Object[]{"HR", 95000.0}, jpqlResult.get(1));
+        }
+
+    /*
+    Criteria API
+    ============
+    Vorteile:
+            - Typsicherheit zur Compile-Zeit (z.B. durch Metamodellklassen wie Employee_)
+            - Gut für dynamisch zusammengesetzte Abfragen
+            - Refactoring-sicher, da keine String-Feldnamen
+    Nachteile:
+            - Weniger lesbar, mehr Boilerplate-Code
+            - Komplexer bei einfachen Abfragen
+
+    JPQL
+    ====
+    Vorteile:
+            - Kürzer und besser lesbar
+            - Ähnelt SQL, daher für viele Entwickler intuitiver
+            - Gut für einfache, statische Abfragen
+    Nachteile:
+            - Weniger typsicher (Fehler oft erst zur Laufzeit)
+            - Refactoring-anfällig, da Feldnamen als Strings verwendet werden
+            - Für dynamische Abfragen ungeeignet
+ */
 
 }

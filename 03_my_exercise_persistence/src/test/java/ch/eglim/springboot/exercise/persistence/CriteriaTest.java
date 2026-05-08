@@ -109,6 +109,29 @@ public class CriteriaTest {
         assertEquals(72000.0, result.getSalary());
     }
 
+    /**
+     * Ex4: Create a query that returns the employee name and the complete address, ordered by the employee’s name
+     */
+    @Test
+    @Sql("/db/migration/afterMigrate.sql")
+    void findEmployeeAndAddressOrderedByName() {
+        var cb = em.getCriteriaBuilder();
+        var cq = cb.createQuery(Employee.class);
+        var employee = cq.from(Employee.class);
+        cq.select(employee)
+                .orderBy(cb.asc(employee.get(Employee_.address)));
+        TypedQuery<Employee> query = em.createQuery(cq);
+        List<Employee> result = query.getResultList();
+
+        // Überprüfe, ob Du Einträge findest (6 Mitarbeiter in der Testdatenbank)
+        assertEquals(6, result.size());
+        assertEquals("Ursula Friedman", result.get(0).getName());
+        assertEquals("Plattenstrasse 26", result.get(0).getAddress().getStreet());
+        assertEquals("Felix Beyer", result.get(5).getName());
+        assertEquals("Geiss", result.get(5).getAddress().getCity());
+
+    }
+
     private void assertDepartmentAverages(List<DepartmentSalaryStatistics> result) {
         assertEquals(2, result.size());
         boolean itFound = false, hrFound = false;

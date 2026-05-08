@@ -63,7 +63,8 @@ public class CriteriaTest {
 
         // Hilfsmethode zum Vergleichen der Ergebnisse, unabhängig von der Reihenfolge
         assertDepartmentAverages(criteriaResult.getResultList());
-        assertDepartmentAverages(jpqlResult.getResultList());        }
+        assertDepartmentAverages(jpqlResult.getResultList());
+    }
 
     /*
     Criteria API
@@ -87,6 +88,26 @@ public class CriteriaTest {
             - Refactoring-anfällig, da Feldnamen als Strings verwendet werden
             - Für dynamische Abfragen ungeeignet
  */
+
+    /**
+     * Ex3: Find the employee with the lowest salary
+     */
+    @Test
+    @Sql("/db/migration/afterMigrate.sql")
+    void findEmployeeWithLowestSalary() {
+        var cb = em.getCriteriaBuilder();
+        var cq = cb.createQuery(Employee.class);
+        var employee = cq.from(Employee.class);
+        cq.select(employee)
+          .orderBy(cb.asc(employee.get(Employee_.salary)));
+        TypedQuery<Employee> query = em.createQuery(cq);
+        query.setMaxResults(1);
+        Employee result = query.getSingleResult();
+
+        assertNotNull(result);
+        // Optional: Überprüfe, ob das Gehalt dem erwarteten Minimalwert entspricht
+        assertEquals(72000.0, result.getSalary());
+    }
 
     private void assertDepartmentAverages(List<DepartmentSalaryStatistics> result) {
         assertEquals(2, result.size());

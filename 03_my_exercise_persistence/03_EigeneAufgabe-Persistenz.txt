@@ -16,7 +16,6 @@ Schritt 3:
 Mache den gleichen Test mit @JPA.
 
 Schritt 4:
-
 Mache zusätzlich eine Criteria-Test Klasse mit beiliegendem Flyway Script, welches die Tabelle mit Daten füllt. Teste, ob die Daten auch wirklich in der DB sind.
 
 Ex1	Find all employees who live in the canton of Zurich

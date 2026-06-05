@@ -132,6 +132,22 @@ public class CriteriaTest {
 
     }
 
+    /**
+     * Ex5: Find employees who are not assigned to a project
+     */
+    @Test
+    @Sql("/db/migration/afterMigrate.sql")
+    void findEmployeesNotAssignedToProject() {
+        var cb = em.getCriteriaBuilder();
+        var cq = cb.createQuery(Employee.class);
+        var employee = cq.from(Employee.class);
+        cq.select(employee)
+                .orderBy(cb.asc(employee.get(Employee_.address)));
+        TypedQuery<Employee> query = em.createQuery(cq);
+        List<Employee> result = query.getResultList();
+
+    }
+
     private void assertDepartmentAverages(List<DepartmentSalaryStatistics> result) {
         assertEquals(2, result.size());
         boolean itFound = false, hrFound = false;

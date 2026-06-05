@@ -1,6 +1,8 @@
 package ch.eglim.springboot.exercise.persistence;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.*;
 
@@ -20,6 +22,14 @@ public class Employee extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Department department;
+
+    @ManyToMany
+    @JoinTable(
+            name = "EMPLOYEE_PROJECT",
+            joinColumns = @JoinColumn(name = "EMPLOYEE_ID"),
+            inverseJoinColumns = @JoinColumn(name = "PROJECT_ID")
+    )
+    private List<Project> projects = new ArrayList<>();
 
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
@@ -95,6 +105,18 @@ public class Employee extends BaseEntity {
 
     public void setDepartment(Department department) {
         this.department = department;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void addProject(Project project) {
+        projects.add(project);
+    }
+
+    public void removeProject(Project project) {
+        projects.remove(project);
     }
 
 }

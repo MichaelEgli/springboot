@@ -25,9 +25,9 @@ public class Employee extends BaseEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "EMPLOYEE_PROJECT",
-            joinColumns = @JoinColumn(name = "EMPLOYEE_ID"),
-            inverseJoinColumns = @JoinColumn(name = "PROJECT_ID")
+            name = "PROJECT_EMPLOYEES",
+            joinColumns = @JoinColumn(name = "EMPLOYEES_ID"),
+            inverseJoinColumns = @JoinColumn(name = "PROJECTS_ID")
     )
     private List<Project> projects = new ArrayList<>();
 

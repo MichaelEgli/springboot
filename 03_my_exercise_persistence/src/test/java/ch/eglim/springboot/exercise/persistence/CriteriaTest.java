@@ -141,10 +141,14 @@ public class CriteriaTest {
         var cb = em.getCriteriaBuilder();
         var cq = cb.createQuery(Employee.class);
         var employee = cq.from(Employee.class);
-        cq.select(employee)
-                .orderBy(cb.asc(employee.get(Employee_.address)));
+
+        cq.select(employee).where(cb.isEmpty(employee.get(Employee_.projects)));
+
         TypedQuery<Employee> query = em.createQuery(cq);
         List<Employee> result = query.getResultList();
+
+        assertEquals(3, result.size(), "Es sollten genau 3 Employees ohne Project gefunden werden");
+
 
     }
 

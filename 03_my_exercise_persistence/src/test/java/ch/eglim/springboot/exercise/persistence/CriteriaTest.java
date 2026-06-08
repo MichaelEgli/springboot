@@ -148,8 +148,6 @@ public class CriteriaTest {
         List<Employee> result = query.getResultList();
 
         assertEquals(3, result.size(), "Es sollten genau 3 Employees ohne Project gefunden werden");
-
-
     }
 
     private void assertDepartmentAverages(List<DepartmentSalaryStatistics> result) {

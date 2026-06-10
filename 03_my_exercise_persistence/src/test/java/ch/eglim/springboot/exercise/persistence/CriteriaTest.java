@@ -150,6 +150,10 @@ public class CriteriaTest {
         assertEquals(3, result.size(), "Es sollten genau 3 Employees ohne Project gefunden werden");
     }
 
+    /**
+     * Ex6: Find all business phone numbers ordered by number
+     */
+
     private void assertDepartmentAverages(List<DepartmentSalaryStatistics> result) {
         assertEquals(2, result.size());
         boolean itFound = false, hrFound = false;

@@ -153,6 +153,11 @@ public class CriteriaTest {
     /**
      * Ex6: Find all business phone numbers ordered by number
      */
+    @Test
+    @Sql("/db/migration/afterMigrate.sql")
+    void findAllWorkPhonesOrderedByNumber() {
+
+    }
 
     private void assertDepartmentAverages(List<DepartmentSalaryStatistics> result) {
         assertEquals(2, result.size());

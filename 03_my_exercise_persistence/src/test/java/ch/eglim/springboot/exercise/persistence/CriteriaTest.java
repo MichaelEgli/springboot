@@ -156,6 +156,14 @@ public class CriteriaTest {
     @Test
     @Sql("/db/migration/afterMigrate.sql")
     void findAllWorkPhonesOrderedByNumber() {
+        var cb = em.getCriteriaBuilder();
+        var cq = cb.createQuery(Employee.class);
+        var employee = cq.from(Employee.class);
+
+        cq.select(employee);
+        TypedQuery<Employee> query = em.createQuery(cq);
+        List<Employee> result = query.getResultList();
+        assertEquals(6, result.size(), "Es sollten genau 6 Employees gefunden werden");
 
     }
 

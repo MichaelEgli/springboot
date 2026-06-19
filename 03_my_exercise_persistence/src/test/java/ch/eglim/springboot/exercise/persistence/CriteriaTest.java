@@ -99,7 +99,7 @@ public class CriteriaTest {
         var cq = cb.createQuery(Employee.class);
         var employee = cq.from(Employee.class);
         cq.select(employee)
-          .orderBy(cb.asc(employee.get(Employee_.salary)));
+                .orderBy(cb.asc(employee.get(Employee_.salary)));
         TypedQuery<Employee> query = em.createQuery(cq);
         query.setMaxResults(1);
         Employee result = query.getSingleResult();
@@ -160,10 +160,10 @@ public class CriteriaTest {
         var cq = cb.createQuery(Employee.class);
         var employee = cq.from(Employee.class);
 
-        cq.select(employee);
+        cq.select(employee).where(cb.isNotEmpty(employee.get(Employee_.phones)));
         TypedQuery<Employee> query = em.createQuery(cq);
         List<Employee> result = query.getResultList();
-        assertEquals(6, result.size(), "Es sollten genau 6 Employees gefunden werden");
+        assertEquals(5, result.size(), "Es sollten genau 6 Employees gefunden werden");
 
     }
 

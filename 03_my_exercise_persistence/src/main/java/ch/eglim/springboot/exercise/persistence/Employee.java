@@ -31,6 +31,10 @@ public class Employee extends BaseEntity {
     )
     private List<Project> projects = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "EMPLOYEE_ID")
+    private List<Phone> phones = new ArrayList<>();
+
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
     private Integer version = 0;
@@ -117,6 +121,14 @@ public class Employee extends BaseEntity {
 
     public void removeProject(Project project) {
         projects.remove(project);
+    }
+
+    public List<Phone> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(List<Phone> phones) {
+        this.phones = phones;
     }
 
 }

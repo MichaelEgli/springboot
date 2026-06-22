@@ -164,7 +164,7 @@ public class CriteriaTest {
         cq.select(employee).where(cb.equal(phone.get(Phone_.type), "WORK")).orderBy(cb.asc(phone.get(Phone_.phone_number)));
         TypedQuery<Employee> query = em.createQuery(cq);
         List<Employee> result = query.getResultList();
-        assertEquals(5, result.size(), "Es sollten genau 6 Employees gefunden werden");
+        assertEquals(5, result.size(), "Es sollen nur business phones ordered by number gefunden werden");
 
     }
 

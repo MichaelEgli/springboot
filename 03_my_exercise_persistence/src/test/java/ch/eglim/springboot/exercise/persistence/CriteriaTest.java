@@ -161,7 +161,7 @@ public class CriteriaTest {
         var employee = cq.from(Employee.class);
         Join<Employee, Phone> phone = employee.join(Employee_.phones);
 
-        cq.select(employee).where(cb.equal(phone.get(Phone_.type), "WORK"));
+        cq.select(employee).where(cb.equal(phone.get(Phone_.type), "WORK")).orderBy(cb.asc(phone.get(Phone_.phone_number)));
         TypedQuery<Employee> query = em.createQuery(cq);
         List<Employee> result = query.getResultList();
         assertEquals(5, result.size(), "Es sollten genau 6 Employees gefunden werden");

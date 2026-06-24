@@ -174,8 +174,22 @@ public class CriteriaTest {
     @Test
     @Sql("/db/migration/afterMigrate.sql")
     void findAllEmployeesNotHavingBusinessPhone() {
+        var cb = em.getCriteriaBuilder();
+        var cq = cb.createQuery(Employee.class);
+        var employee = cq.from(Employee.class);
 
+        // Subquery: Existiert für diesen Employee ein Phone vom Typ "WORK"?
+        var subquery = cq.subquery(Phone.class);
+        var subEmployee = subquery.correlate(employee);
+        Join<Employee, Phone> phone = subEmployee.join(Employee_.phones);
+        subquery.select(phone)
+                .where(cb.equal(phone.get(Phone_.type), "WORK"));
 
+        // Nur Employees ohne ein einziges WORK-Phone
+        cq.select(employee).where(cb.not(cb.exists(subquery)));
+        TypedQuery<Employee> query = em.createQuery(cq);
+        List<Employee> result = query.getResultList();
+        assertEquals(1, result.size(), "Es soll nur 1 Employee ohne business phone gefunden werden");
     }
 
     private void assertDepartmentAverages(List<DepartmentSalaryStatistics> result) {

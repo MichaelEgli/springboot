@@ -168,6 +168,16 @@ public class CriteriaTest {
 
     }
 
+        /**
+     * Ex7: Find employees who do not have a business phone number yet
+     */
+    @Test
+    @Sql("/db/migration/afterMigrate.sql")
+    void findAllEmployeesNotHavingBusinessPhone() {
+
+
+    }
+
     private void assertDepartmentAverages(List<DepartmentSalaryStatistics> result) {
         assertEquals(2, result.size());
         boolean itFound = false, hrFound = false;

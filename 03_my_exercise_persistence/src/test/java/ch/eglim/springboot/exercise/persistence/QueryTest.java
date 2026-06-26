@@ -38,4 +38,13 @@ public class QueryTest {
 
         assertEquals(3, zuercher.size());
     }
+
+        /**
+     * Ex2: Calculate the average salary of employees per department
+     */
+    @Test
+    @Sql("/db/migration/afterMigrate.sql")
+    void calculateAverageSalaryPerDepartment() {
+        System.out.println("hello");
+    }
 }

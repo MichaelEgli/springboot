@@ -23,6 +23,8 @@ class QueryTest {
 
     @Autowired
     private EntityManager em;
+    @Autowired
+    private DepartmentRepo departmentRepository;
 
     /**
      * Ex1	Find all employees who live in the canton of Zurich
@@ -43,12 +45,7 @@ class QueryTest {
     @Sql("/db/migration/afterMigrate.sql")
     void calculateAverageSalaryPerDepartment() {
 
-        TypedQuery<DepartmentSalaryStatistics> query = em.createQuery(
-                "select new ch.eglim.springboot.exercise.persistence.dto.DepartmentSalaryStatistics(d.name, avg(e.salary)) " +
-                        "from Employee e join e.department d " +
-                        "group by d.name " +
-                        "order by d.name", DepartmentSalaryStatistics.class);
-
+        TypedQuery<DepartmentSalaryStatistics> query = em.createNamedQuery(Department.AVG_SALARY, DepartmentSalaryStatistics.class);
         List<DepartmentSalaryStatistics> result = query.getResultList();
 
         assertEquals(2, result.size());

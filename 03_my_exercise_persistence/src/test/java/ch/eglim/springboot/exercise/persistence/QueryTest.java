@@ -45,6 +45,11 @@ public class QueryTest {
     @Test
     @Sql("/db/migration/afterMigrate.sql")
     void calculateAverageSalaryPerDepartment() {
-        System.out.println("hello");
+
+        TypedQuery<DepartmentSalaryStatistics> query = em.createQuery(
+                "select new ch.eglim.springboot.exercise.persistence.dto.DepartmentSalaryStatistics(d.name, avg(e.salary)) " +
+                        "from Employee e join e.department d " +
+                        "group by d.name", DepartmentSalaryStatistics.class);
+        System.out.println("hello: " + query.getResultList());
     }
 }

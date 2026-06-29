@@ -50,6 +50,10 @@ public class QueryTest {
                 "select new ch.eglim.springboot.exercise.persistence.dto.DepartmentSalaryStatistics(d.name, avg(e.salary)) " +
                         "from Employee e join e.department d " +
                         "group by d.name", DepartmentSalaryStatistics.class);
+        assertEquals("IT", query.getResultList().get(0).departmentName());
         System.out.println("hello: " + query.getResultList());
+
+        List<DepartmentSalaryStatistics> result = query.getResultList();
+        assertEquals(2, result.size());
     }
 }

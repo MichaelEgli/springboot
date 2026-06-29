@@ -5,8 +5,16 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@NamedQuery(name = Department.AVG_SALARY,
+        query = """
+                select new ch.eglim.springboot.exercise.persistence.dto.DepartmentSalaryStatistics(e.department.name, avg(e.salary))
+                from Employee e group by e.department.name
+                """)
+
 @Entity
 public class Department extends BaseEntity {
+
+    public static final String AVG_SALARY = "Department.avgSalary";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "department_seq")

@@ -1,5 +1,6 @@
 package ch.eglim.springboot.exercise.persistence;
 
+import ch.eglim.springboot.exercise.persistence.dto.DepartmentSalaryStatistics;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 
+import static org.assertj.core.api.Fail.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Import(TestcontainersConfiguration.class)
@@ -38,7 +40,6 @@ public class QueryTest {
 
         assertEquals(3, zuercher.size());
     }
-
     /**
      * Ex2: Calculate the average salary of employees per department
      */
@@ -51,9 +52,20 @@ public class QueryTest {
                         "from Employee e join e.department d " +
                         "group by d.name", DepartmentSalaryStatistics.class);
         assertEquals("IT", query.getResultList().get(0).departmentName());
-        System.out.println("hello: " + query.getResultList());
+        System.out.println("Result: " + query.getResultList());
 
         List<DepartmentSalaryStatistics> result = query.getResultList();
         assertEquals(2, result.size());
+
+        for (DepartmentSalaryStatistics stat : result) {
+            if(stat.departmentName().equals("IT")) {
+                assertEquals(97200, stat.averageSalary());
+            } else if(stat.departmentName().equals("HR")) {
+                assertEquals(95000, stat.averageSalary());
+            } else {
+                fail("Department and/or average salary not expected: " + stat.departmentName() + " - " + stat.averageSalary());
+            }
+        }
     }
+
 }

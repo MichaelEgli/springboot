@@ -19,14 +19,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 
-public class QueryTest {
+class QueryTest {
 
     @Autowired
     private EntityManager em;
-    @Autowired
-    private EmployeeRepo employeeRepository;
-    @Autowired
-    private DepartmentRepo departmentRepository;
 
     /**
      * Ex1	Find all employees who live in the canton of Zurich
@@ -50,20 +46,18 @@ public class QueryTest {
         TypedQuery<DepartmentSalaryStatistics> query = em.createQuery(
                 "select new ch.eglim.springboot.exercise.persistence.dto.DepartmentSalaryStatistics(d.name, avg(e.salary)) " +
                         "from Employee e join e.department d " +
-                        "group by d.name", DepartmentSalaryStatistics.class);
-        assertEquals("IT", query.getResultList().get(0).departmentName());
-        System.out.println("Result: " + query.getResultList());
+                        "group by d.name " +
+                        "order by d.name", DepartmentSalaryStatistics.class);
 
         List<DepartmentSalaryStatistics> result = query.getResultList();
-        assertEquals(2, result.size());
 
+        assertEquals(2, result.size());
         for (DepartmentSalaryStatistics stat : result) {
-            if(stat.departmentName().equals("IT")) {
-                assertEquals(97200, stat.averageSalary());
-            } else if(stat.departmentName().equals("HR")) {
-                assertEquals(95000, stat.averageSalary());
-            } else {
-                fail("Department and/or average salary not expected: " + stat.departmentName() + " - " + stat.averageSalary());
+            switch (stat.departmentName()) {
+                case "IT" -> assertEquals(97200, stat.averageSalary(), 0.001);
+                case "HR" -> assertEquals(95000, stat.averageSalary(), 0.001);
+                default -> fail("Department and/or average salary not expected: "
+                        + stat.departmentName() + " - " + stat.averageSalary());
             }
         }
     }

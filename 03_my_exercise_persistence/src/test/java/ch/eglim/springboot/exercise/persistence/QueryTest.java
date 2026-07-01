@@ -58,5 +58,14 @@ class QueryTest {
             }
         }
     }
+    
+    /**
+     * Ex3: Find the employee with the lowest salary
+     */
+    @Test
+    @Sql("/db/migration/afterMigrate.sql")
+    void findEmployeeWithLowestSalary() {
+        System.out.println("hello");
+    }
 
 }
